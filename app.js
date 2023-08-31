@@ -4,6 +4,7 @@ let ctx = canvas.getContext("2d")
 let snake = [{x:160, y:160}]
 let appleGrid = {x:5, y:5}
 let apple = {x: 5*80, y:5*80}
+let appleTemp = {}
 
 let lastPress = ""
 
@@ -91,6 +92,18 @@ function draw(){
 function appleGen(){
     appleGrid.x = rng(0, 8)
     appleGrid.y = rng(0, 8)
+    appleTemp.x = appleGrid.x*80
+    appleTemp.y = appleGrid.y*80
+    for(i = snake.length-1; i >=  1; i--){
+        while(appleCheck(appleTemp, snake[i])){
+                appleGrid.x = rng(0, 8)
+                appleGrid.y = rng(0, 8)
+                appleTemp.x = appleGrid.x*80
+                appleTemp.y = appleGrid.y*80
+                i = snake.length-1
+                console.log("APPLE IN SNAKE!")
+        }
+    }
     apple.x = appleGrid.x*80
     apple.y = appleGrid.y*80
 }
@@ -137,6 +150,13 @@ function snakeCollision(head, body){
         snake = [{x:160, y:160}]
         lastPress = ""
     }
+}
+
+function appleCheck(apple, snake){
+    if(apple.x === snake.x && apple.y === snake.y){
+        return true
+    }
+    return false
 }
 
 draw()
